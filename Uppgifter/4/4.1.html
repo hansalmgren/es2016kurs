@@ -1,0 +1,234 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <!-- Exercise Manual Viewer Version 1.0.1402.5 -->
+    <meta charset="utf-8">
+    <title>Exercise Manual Viewer: Hands-On Exercise 4.1</title>
+    <link href="jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+    <link href="DynEx.css" rel="stylesheet" />
+    <script src="jquery-1.9.1.min.js"></script>
+    <script src="jquery-ui-1.10.3.custom.min.js"></script>
+    <script>
+        $(function ()
+        {
+            $("#accordion0, #accordion1, #accordion2, #accordion3").accordion({
+                header: "> div.ExFold",
+                collapsible: true,
+                active: false,
+                heightStyle: "content"
+            });
+
+            $("#accordion0, #accordion1, #accordion2, #accordion3").accordion(
+                "option",
+                "icons",
+                { 'header': 'ui-icon-triangle-1-e', 'activeHeader': 'ui-icon-triangle-1-se' });
+
+            $(".copyable code").mouseover(
+                function ()
+                {
+                    var codeElement = $(this);
+                    var preElement = codeElement.parent();
+                    var codeTag = codeElement[0];
+                    var pasteStr = codeTag.textContent ? 
+                        codeTag.textContent : codeTag.innerText;
+                    var copySite = $("#copysite");
+                    copySite.val(pasteStr/*unescapeHTML(pasteStr)*/);
+                    copySite.select();
+                    preElement.css("background-color", "#f0f0ff");
+                    preElement.css("border-color", "#4040ff");
+                    preElement.children("div").css("display", "block");
+                });
+
+            $(".copyable code").mouseout(
+                function()
+                {
+                    var codeElement = $(this);
+                    var preElement = codeElement.parent();
+                    preElement.css("background-color", "white");
+                    preElement.css("border-color", "white");
+                    preElement.children("div").css("display", "none");
+                });
+
+            var localStorageOK = hasLocalStorage();
+            if (hasLocalStorage)
+            {
+                $('input:checkbox').click(function () {
+                    var $this = $(this);
+                    if ($this.is(':checked')) {
+                        localStorage.setItem($this.attr("id"), "true");
+                    } else {
+                        localStorage.setItem($this.attr("id"), "false");
+                    }
+                });
+                $('input:radio').click(function () {
+                    var $this = $(this);
+                    var groupName = $this.attr('name');
+                    $('input:radio[name=' + groupName + ']')
+                        .each(function (index, radioItem) {
+                            var $radioItem = $(radioItem);
+                            if ($radioItem.is(':checked') && localStorageOK) {
+                                localStorage.setItem($radioItem.attr("id"), "true");
+                            } else {
+                                localStorage.setItem($radioItem.attr("id"), "false");
+                            }
+                        });
+                });
+                $('input:text, textarea').change(function () {
+                    var $this = $(this);
+                    var textVal = $this.val();
+                    localStorage.setItem($this.attr("id"), textVal);
+                });
+                $('input:checkbox, input:radio').each(function (index, chkItem) {
+                    var $chkItem = $(chkItem);
+                    var storedVal = localStorage.getItem($chkItem.attr("id"));
+                    $chkItem.prop("checked", storedVal && storedVal == "true");
+                });
+                $('input:text, textarea').each(function (index, inputItem) {
+                    var $inputItem = $(inputItem);
+                    var storedVal = localStorage.getItem($inputItem.attr("id"));
+                    if (storedVal)
+                        $inputItem.val(storedVal);
+                });
+            }
+        });
+
+    function unescapeHTML(str)
+    {
+        return String(str)
+            .replace(/\n/g, '\r\n')
+            .replace(/<[^>]*>/g, '')
+            .replace(/\&amp;/g, '\&')
+            .replace(/\&quot;/g, '\"')
+            .replace(/\&#39;/g, '\'')
+            .replace(/\&lt;/g, '<')
+            .replace(/\&gt;/g, '>')
+            .replace(/&nbsp;/g, ' ');
+    }
+
+    function escapeHTML(str)
+    {
+        return String(str)
+            .replace(/\n/g, '\r\n')
+            .replace(/\&/g, '&amp;')
+            .replace(/\"/g, '&quot;')
+            .replace(/\'/g, '&#39;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+    }
+    function hasLocalStorage() {
+        try {
+            return 'localStorage' in window && window['localStorage'] !== null;
+        } catch (e) {
+            return false;
+        }
+    }
+    </script>
+</head>
+<body>
+<form>
+    <div class="ExTitle">
+        <div style="width:70%; float:left;">
+            <strong>Hands-On Exercise 4.1</strong><br />
+            <strong>Function Parameters</strong>
+        </div>
+        <div class="ExTitleLink">
+            <a href="index.html">Exercise list &hellip;</a>
+        </div>
+    </div>
+    <div class="ExHidden"><textarea style="width:1px; height:1px;" id="copysite"></textarea></div>
+    <br /><br />
+    <br /><br />
+    <br /><br />
+    <br /><br />
+  <div style="display:table;">
+    <div class="ExRow"><div class="ExText"><strong>Objectives</strong></div></div><div class="ExRow"><div class="ExText"><strong>In this exercise, you will program functions, include default parameters, and employ the <code>rest</code> operator.</strong></div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        1.
+        <input type="checkbox" id="gl0zs00" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Use the Course Exercise Launcher application to open the start point to Exercise 4.1.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        2.
+        <input type="checkbox" id="gl0zs01" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Open a <strong>Node.js command prompt</strong> and navigate to the <code>C:\Course\2323\Exercises\Ex4.1</code> folder.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        3.
+        <input type="checkbox" id="gl0zs02" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Run the <code>npm start</code> command to launch the webpack development server.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        4.
+        <input type="checkbox" id="gl0zs03" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Browse to <code>http://localhost:8080/</code>.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        5.
+        <input type="checkbox" id="gl0zs04" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Return to the <code>index.js</code> file in WebStorm.
+      </div></div><div class="ExRow" style="padding-top:24px;"><div class="ExLeft"><img src="images/exMajorStep.jpg" /></div><div class="ExRight"><strong>Investigating <font face="monospace">function </font>enhancements</strong></div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        6.
+        <input type="checkbox" id="gl0zs05" /></div><div class="ExRight" style="vertical-align:baseline;">
+        After the existing code, declare a new <code>function</code> called <code>scoreDetails</code> with two arguments called <code>score</code> and <code>total</code>.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        7.
+        <input type="checkbox" id="gl0zs06" /></div><div class="ExRight" style="vertical-align:baseline;">
+        In the <code>function</code> body, declare a new variable called <code>percent</code>. Initialize this using <code>score * 100 / total</code>.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        8.
+        <input type="checkbox" id="gl0zs07" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Complete the <code>function</code> by writing a statement that uses a string template to <code>return `You have scored SCORE out of TOTAL for PERCENT%`</code>, substituting the appropriate interpolated expressions for <code>SCORE</code>, <code>TOTAL</code>, and <code>PERCENT</code>.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>Here's how the complete <code>scoreDetails</code> function should look:</i></div></div><div class="ExRow"><div class="ExText">
+                  <small><code>function scoreDetails(score, total) {<br />
+    const percent = score * 100 / total;<br />
+    return `&lt;h2&gt;You have scored ${score} out of ${total} for ${percent}%&lt;/h2&gt;`;<br />
+}</code></small>
+              </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        9.
+        <input type="checkbox" id="gl0zs08" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Modify the <code>welcomeMessage</code> string template to include an interpolated expression that calls the <code>scoreDetails(1, 2)</code> function passing through <code>1</code> for the score and <code>2</code> for the total.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>Here's how the complete <code>index.js</code> file should look, with the changes in bold.</i></div></div><div class="ExRow"><div class="ExText">
+                  <p><small><code>'use strict';</code></small></p><p><small><code>const PLAYER_NAME = "Your Name";</code></small></p><p><small><code>let welcomeMessage = `&lt;h1&gt;Welcome to Question Time ${PLAYER_NAME}&lt;/h1&gt;</code></small></p><p> </p><p><small><code><strong>${scoreDetails(1, 2)}</strong><br />
+`;<br />
+const APP_TARGET = document.getElementById('es-app');<br />
+APP_TARGET.innerHTML = welcomeMessage;</code></small></p><p><small><code> </code></small></p><p><small><code>function scoreDetails(score, total) {<br />
+    const percent = score * 100 / total;<br />
+    return `&lt;h2&gt;You have scored ${score} out of ${total} for ${percent}%&lt;/h2&gt;`;<br />
+}</code></small></p>
+              </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exQuestion.jpg" /></div><div class="ExRight"><i><p>What can you see in the browser?</p><p><input type="text" id="gl0zs09" /></p></i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>Your UI should look like this:</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+        <div class="MediaDiv" style="max-width: 463px;"><img src="images/2323.4.1.11.png" /></div>
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        10.
+        <input type="checkbox" id="gl0zs010" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Return to the <code>index.js</code> file and modify the <code>${scoreDetails(1, 2)}</code> invocation to remove both parameters, so that the call is <code>${scoreDetails()}</code>.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exQuestion.jpg" /></div><div class="ExRight"><i><p>What can you see now?</p><p><input type="text" id="gl0zs011" /></p></i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exWarning.jpg" /></div><div class="ExRight"><strong>You should see that the output contains <code>undefined</code> and <code>NaN</code>.</strong></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+        <div class="MediaDiv" style="max-width: 463px;"><img src="images/2323.4.1.12.png" /></div>
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        11.
+        <input type="checkbox" id="gl0zs012" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Return to the <code>index.js</code> file and modify the <code>scoreDetails(score, total)</code> function to add default values for the <code>score</code> and <code>total</code> parameters.
+      </div></div><div class="ExRow"><div class="ExText"><div id="accordion0"><div class="ExFold"><img src="images/exHint.jpg" /><img src="images/exPadding.jpg" /><i>Hint...</i></div><div>
+                        <div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+                  Use the default value of 0 for both parameters.
+              </div></div>
+                    </div></div></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>Here's how the <code>scoreDetails(...)</code> function should look, with the changes in bold:</i></div></div><div class="ExRow"><div class="ExText">
+                  <small><code>function scoreDetails(score<strong> = 0</strong>, total<strong> = 0</strong>) {<br />
+    const percent = score * 100 / total;<br />
+    return `&lt;h2&gt;You have scored ${score} out of ${total} for ${percent}%&lt;/h2&gt;`;<br />
+}</code></small>
+              </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exQuestion.jpg" /></div><div class="ExRight"><i><p>What can you see now?</p><p><input type="text" id="gl0zs013" /></p></i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>The undefined values have gone!</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exWarning.jpg" /></div><div class="ExRight"><strong>But the <code>NaN</code> remains.</strong></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+        <div class="MediaDiv" style="max-width: 463px;"><img src="images/2323.4.1.14.png" /></div>
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exInfo.jpg" /></div><div class="ExRight"><i>You could fix the <code>NaN</code> value by testing for the <code>total</code> parameter being <code>0</code>. An alternative approach, using a new ES2015 feature, is to test using <code>Number.isNaN(value)</code>.</i></div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        12.
+        <input type="checkbox" id="gl0zs014" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Modify the <code>${percent}</code> interpolated expression to include a ternary statement testing for <code>Number.isNaN(percent)</code>. Use <code>0</code> for the true statement and <code>percent</code> for the alternative.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>Here's how the <code>gameDetails(...)</code> function should look, with the change in bold.</i></div></div><div class="ExRow"><div class="ExText">
+                  <small><code>function scoreDetails(score = 0, total = 0) {<br />
+    const percent = score * 100 / total;<br />
+    return `&lt;h2&gt;You have scored ${score} out of ${total} for<br />
+            ${<strong>Number.isNaN(percent) ? 0 : percent</strong>}%&lt;/h2&gt;`;<br /><span style="line-height:1.6">}</span></code></small>
+              </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exQuestion.jpg" /></div><div class="ExRight"><i><p>What can you see now?</p><p><input type="text" id="gl0zs015" /></p></i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>You should see that the output value is OK!</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+        <div class="MediaDiv" style="max-width: 463px;"><img src="images/2323.4.1.15.png" /></div>
+      </div></div><div class="ExRow" style="padding-top:24px;"><div class="ExLeft"><img src="images/exFinish.jpg" /></div><div class="ExRight"><strong>Congratulations! You have completed the exercise.</strong></div></div><div class="ExRow"><div class="ExCentredText"><img src="images/ExStop.jpg" /><br /><strong><i>This is the end of the exercise.</i></strong></div></div>
+  </div>
+  <div class="ExFooter"><br/>Viewer version 1.0.1505.28</div>
+</form>
+</body>
+</html>
+
+

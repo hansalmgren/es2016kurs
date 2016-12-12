@@ -1,0 +1,209 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <!-- Exercise Manual Viewer Version 1.0.1402.5 -->
+    <meta charset="utf-8">
+    <title>Exercise Manual Viewer: Hands-On Exercise 4.3</title>
+    <link href="jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+    <link href="DynEx.css" rel="stylesheet" />
+    <script src="jquery-1.9.1.min.js"></script>
+    <script src="jquery-ui-1.10.3.custom.min.js"></script>
+    <script>
+        $(function ()
+        {
+            $("#accordion0, #accordion1, #accordion2, #accordion3").accordion({
+                header: "> div.ExFold",
+                collapsible: true,
+                active: false,
+                heightStyle: "content"
+            });
+
+            $("#accordion0, #accordion1, #accordion2, #accordion3").accordion(
+                "option",
+                "icons",
+                { 'header': 'ui-icon-triangle-1-e', 'activeHeader': 'ui-icon-triangle-1-se' });
+
+            $(".copyable code").mouseover(
+                function ()
+                {
+                    var codeElement = $(this);
+                    var preElement = codeElement.parent();
+                    var codeTag = codeElement[0];
+                    var pasteStr = codeTag.textContent ? 
+                        codeTag.textContent : codeTag.innerText;
+                    var copySite = $("#copysite");
+                    copySite.val(pasteStr/*unescapeHTML(pasteStr)*/);
+                    copySite.select();
+                    preElement.css("background-color", "#f0f0ff");
+                    preElement.css("border-color", "#4040ff");
+                    preElement.children("div").css("display", "block");
+                });
+
+            $(".copyable code").mouseout(
+                function()
+                {
+                    var codeElement = $(this);
+                    var preElement = codeElement.parent();
+                    preElement.css("background-color", "white");
+                    preElement.css("border-color", "white");
+                    preElement.children("div").css("display", "none");
+                });
+
+            var localStorageOK = hasLocalStorage();
+            if (hasLocalStorage)
+            {
+                $('input:checkbox').click(function () {
+                    var $this = $(this);
+                    if ($this.is(':checked')) {
+                        localStorage.setItem($this.attr("id"), "true");
+                    } else {
+                        localStorage.setItem($this.attr("id"), "false");
+                    }
+                });
+                $('input:radio').click(function () {
+                    var $this = $(this);
+                    var groupName = $this.attr('name');
+                    $('input:radio[name=' + groupName + ']')
+                        .each(function (index, radioItem) {
+                            var $radioItem = $(radioItem);
+                            if ($radioItem.is(':checked') && localStorageOK) {
+                                localStorage.setItem($radioItem.attr("id"), "true");
+                            } else {
+                                localStorage.setItem($radioItem.attr("id"), "false");
+                            }
+                        });
+                });
+                $('input:text, textarea').change(function () {
+                    var $this = $(this);
+                    var textVal = $this.val();
+                    localStorage.setItem($this.attr("id"), textVal);
+                });
+                $('input:checkbox, input:radio').each(function (index, chkItem) {
+                    var $chkItem = $(chkItem);
+                    var storedVal = localStorage.getItem($chkItem.attr("id"));
+                    $chkItem.prop("checked", storedVal && storedVal == "true");
+                });
+                $('input:text, textarea').each(function (index, inputItem) {
+                    var $inputItem = $(inputItem);
+                    var storedVal = localStorage.getItem($inputItem.attr("id"));
+                    if (storedVal)
+                        $inputItem.val(storedVal);
+                });
+            }
+        });
+
+    function unescapeHTML(str)
+    {
+        return String(str)
+            .replace(/\n/g, '\r\n')
+            .replace(/<[^>]*>/g, '')
+            .replace(/\&amp;/g, '\&')
+            .replace(/\&quot;/g, '\"')
+            .replace(/\&#39;/g, '\'')
+            .replace(/\&lt;/g, '<')
+            .replace(/\&gt;/g, '>')
+            .replace(/&nbsp;/g, ' ');
+    }
+
+    function escapeHTML(str)
+    {
+        return String(str)
+            .replace(/\n/g, '\r\n')
+            .replace(/\&/g, '&amp;')
+            .replace(/\"/g, '&quot;')
+            .replace(/\'/g, '&#39;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+    }
+    function hasLocalStorage() {
+        try {
+            return 'localStorage' in window && window['localStorage'] !== null;
+        } catch (e) {
+            return false;
+        }
+    }
+    </script>
+</head>
+<body>
+<form>
+    <div class="ExTitle">
+        <div style="width:70%; float:left;">
+            <strong>Hands-On Exercise 4.3</strong><br />
+            <strong>Arrow Functions</strong>
+        </div>
+        <div class="ExTitleLink">
+            <a href="index.html">Exercise list &hellip;</a>
+        </div>
+    </div>
+    <div class="ExHidden"><textarea style="width:1px; height:1px;" id="copysite"></textarea></div>
+    <br /><br />
+    <br /><br />
+    <br /><br />
+    <br /><br />
+  <div style="display:table;">
+    <div class="ExRow"><div class="ExText"><strong>Objectives</strong></div></div><div class="ExRow"><div class="ExText"><strong>In this exercise, you will refactor an inline function to use ES2015 arrow function syntax.</strong></div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        1.
+        <input type="checkbox" id="cwbykw0" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Use the Course Exercise Launcher application to open the start point to Exercise 4.3.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        2.
+        <input type="checkbox" id="cwbykw1" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Open a <strong>Node.js command prompt</strong> and navigate to the <code>C:\Course\2323\Exercises\Ex4.3</code> folder.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        3.
+        <input type="checkbox" id="cwbykw2" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Run the <code>npm start</code> command to launch the webpack development server.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        4.
+        <input type="checkbox" id="cwbykw3" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Browse to <code>http://localhost:8080/</code>.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        5.
+        <input type="checkbox" id="cwbykw4" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Return to the <code>index.js</code> file in WebStorm.
+      </div></div><div class="ExRow" style="padding-top:24px;"><div class="ExLeft"><img src="images/exMajorStep.jpg" /></div><div class="ExRight"><strong>Investigating arrow functions</strong></div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        6.
+        <input type="checkbox" id="cwbykw5" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Modify the inline <code>function (item) { return `...` }</code> callback in the <code>questionDetails(...)</code> declaration to use arrow function syntax instead.
+      </div></div><div class="ExRow"><div class="ExText"><div id="accordion0"><div class="ExFold"><img src="images/exHint.jpg" /><img src="images/exPadding.jpg" /><i>Hint...</i></div><div>
+                        <div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+                  The syntax for an arrow function is <code>(param1, param2) =&gt; { return `...` }</code>
+              </div></div>
+                    </div></div></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>Here's how the <code>questionDetails(...)</code> function should look, with the changes in bold:</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+                  <p><small><code>function questionDetails(questionText, ...answers) {<br />
+    return `&lt;h3&gt;${questionText}&lt;/h3&gt;</code></small></p><p><small><code>    &lt;ul&gt;<br />
+      ${answers.map(<strong>(item) =&gt; { return `&lt;li&gt;${item}&lt;/li&gt;`}</strong>).join('')}<br />
+    &lt;/ul&gt;<br />
+    `<br />
+}</code></small></p>
+              </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        7.
+        <input type="checkbox" id="cwbykw6" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Because there's only one parameter, the parentheses around the <code>(item)</code> are optional. Remove them.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        8.
+        <input type="checkbox" id="cwbykw7" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Because the body of the arrow function only has a single return statement, the braces <code>{ ... }</code> and <code>return</code> are optional. Remove them.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>Here's how the <code>questionDetails(...)</code> function should look. Notice how it's much shorter.</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight"><strong><p><code>function questionDetails(questionText, ...answers) {<br />
+    return `&lt;h3&gt;${questionText}&lt;/h3&gt;</code></p><p><code>    &lt;ul&gt;<br />
+      ${answers.map(<strong>item =&gt; `&lt;li&gt;${item}&lt;/li&gt;`</strong>).join('')}<br />
+    &lt;/ul&gt;<br />
+    `<br />
+}</code></p></strong></div></div><div class="ExRow" style="padding-top:24px;"><div class="ExLeft"><img src="images/exFinish.jpg" /></div><div class="ExRight"><strong>Congratulations! You have completed the exercise.</strong></div></div><div class="ExRow" style="padding-top:24px;"><div class="ExLeft"><img src="images/exBonus.jpg" /></div><div class="ExRight"><strong>If you have more time: generate each answer as a radio button with the <code>name='answer'</code>; use the index for the <code>value</code> attribute.</strong></div></div><div class="ExRow"><div class="ExText"><div id="accordion0"><div class="ExFold"><img src="images/exHint.jpg" /><img src="images/exPadding.jpg" /><i>Hint...</i></div><div>
+                        <div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+                  You can get the index position in the map function using <code>(item, index)</code>.
+              </div></div>
+                    </div></div></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>Here's how the <code>questionDetails(...)</code> might look, with the change in bold:</i></div></div><div class="ExRow"><div class="ExText">
+                  <p><small><code>function questionDetails(questionText, ...answers) {<br />
+    return `&lt;h3&gt;${questionText}&lt;/h3&gt;</code></small></p><p><small><code>    &lt;ul&gt;<br />
+      ${answers.map(<strong>(item, index)</strong> =&gt; `&lt;li&gt;</code></small></p><p><small><code><strong style="line-height:1.6">        &lt;input type='radio' name='answer' value='${index}'&gt;</strong></code></small></p><p><small><code><strong style="line-height:1.6">        </strong><span style="line-height:1.6">${item}</span></code></small></p><p><small><code>      &lt;/li&gt;`).join('')}</code></small></p><p><small><code>    &lt;/ul&gt;<br />
+    `<br />
+}</code></small></p>
+              </div></div><div class="ExRow" style="padding-top:24px;"><div class="ExLeft"><img src="images/exFinish.jpg" /></div><div class="ExRight"><strong>Congratulations! You have completed the bonus.</strong></div></div><div class="ExRow"><div class="ExCentredText"><img src="images/ExStop.jpg" /><br /><strong><i>This is the end of the exercise.</i></strong></div></div>
+  </div>
+  <div class="ExFooter"><br/>Viewer version 1.0.1505.28</div>
+</form>
+</body>
+</html>
+
+
