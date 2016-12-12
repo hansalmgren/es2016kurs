@@ -1,0 +1,245 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <!-- Exercise Manual Viewer Version 1.0.1402.5 -->
+    <meta charset="utf-8">
+    <title>Exercise Manual Viewer: Hands-On Exercise 3.1</title>
+    <link href="jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+    <link href="DynEx.css" rel="stylesheet" />
+    <script src="jquery-1.9.1.min.js"></script>
+    <script src="jquery-ui-1.10.3.custom.min.js"></script>
+    <script>
+        $(function ()
+        {
+            $("#accordion0, #accordion1, #accordion2, #accordion3").accordion({
+                header: "> div.ExFold",
+                collapsible: true,
+                active: false,
+                heightStyle: "content"
+            });
+
+            $("#accordion0, #accordion1, #accordion2, #accordion3").accordion(
+                "option",
+                "icons",
+                { 'header': 'ui-icon-triangle-1-e', 'activeHeader': 'ui-icon-triangle-1-se' });
+
+            $(".copyable code").mouseover(
+                function ()
+                {
+                    var codeElement = $(this);
+                    var preElement = codeElement.parent();
+                    var codeTag = codeElement[0];
+                    var pasteStr = codeTag.textContent ? 
+                        codeTag.textContent : codeTag.innerText;
+                    var copySite = $("#copysite");
+                    copySite.val(pasteStr/*unescapeHTML(pasteStr)*/);
+                    copySite.select();
+                    preElement.css("background-color", "#f0f0ff");
+                    preElement.css("border-color", "#4040ff");
+                    preElement.children("div").css("display", "block");
+                });
+
+            $(".copyable code").mouseout(
+                function()
+                {
+                    var codeElement = $(this);
+                    var preElement = codeElement.parent();
+                    preElement.css("background-color", "white");
+                    preElement.css("border-color", "white");
+                    preElement.children("div").css("display", "none");
+                });
+
+            var localStorageOK = hasLocalStorage();
+            if (hasLocalStorage)
+            {
+                $('input:checkbox').click(function () {
+                    var $this = $(this);
+                    if ($this.is(':checked')) {
+                        localStorage.setItem($this.attr("id"), "true");
+                    } else {
+                        localStorage.setItem($this.attr("id"), "false");
+                    }
+                });
+                $('input:radio').click(function () {
+                    var $this = $(this);
+                    var groupName = $this.attr('name');
+                    $('input:radio[name=' + groupName + ']')
+                        .each(function (index, radioItem) {
+                            var $radioItem = $(radioItem);
+                            if ($radioItem.is(':checked') && localStorageOK) {
+                                localStorage.setItem($radioItem.attr("id"), "true");
+                            } else {
+                                localStorage.setItem($radioItem.attr("id"), "false");
+                            }
+                        });
+                });
+                $('input:text, textarea').change(function () {
+                    var $this = $(this);
+                    var textVal = $this.val();
+                    localStorage.setItem($this.attr("id"), textVal);
+                });
+                $('input:checkbox, input:radio').each(function (index, chkItem) {
+                    var $chkItem = $(chkItem);
+                    var storedVal = localStorage.getItem($chkItem.attr("id"));
+                    $chkItem.prop("checked", storedVal && storedVal == "true");
+                });
+                $('input:text, textarea').each(function (index, inputItem) {
+                    var $inputItem = $(inputItem);
+                    var storedVal = localStorage.getItem($inputItem.attr("id"));
+                    if (storedVal)
+                        $inputItem.val(storedVal);
+                });
+            }
+        });
+
+    function unescapeHTML(str)
+    {
+        return String(str)
+            .replace(/\n/g, '\r\n')
+            .replace(/<[^>]*>/g, '')
+            .replace(/\&amp;/g, '\&')
+            .replace(/\&quot;/g, '\"')
+            .replace(/\&#39;/g, '\'')
+            .replace(/\&lt;/g, '<')
+            .replace(/\&gt;/g, '>')
+            .replace(/&nbsp;/g, ' ');
+    }
+
+    function escapeHTML(str)
+    {
+        return String(str)
+            .replace(/\n/g, '\r\n')
+            .replace(/\&/g, '&amp;')
+            .replace(/\"/g, '&quot;')
+            .replace(/\'/g, '&#39;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+    }
+    function hasLocalStorage() {
+        try {
+            return 'localStorage' in window && window['localStorage'] !== null;
+        } catch (e) {
+            return false;
+        }
+    }
+    </script>
+</head>
+<body>
+<form>
+    <div class="ExTitle">
+        <div style="width:70%; float:left;">
+            <strong>Hands-On Exercise 3.1</strong><br />
+            <strong>Variables, Constants, <code>Number</code>, and <code>Math</code></strong>
+        </div>
+        <div class="ExTitleLink">
+            <a href="index.html">Exercise list &hellip;</a>
+        </div>
+    </div>
+    <div class="ExHidden"><textarea style="width:1px; height:1px;" id="copysite"></textarea></div>
+    <br /><br />
+    <br /><br />
+    <br /><br />
+    <br /><br />
+  <div style="display:table;">
+    <div class="ExRow"><div class="ExText"><strong>Objectives</strong></div></div><div class="ExRow"><div class="ExText"><strong>In this exercise, you will explore new ECMAScript features for declaring variables and constants and work with some enhancements to numeric data types and the <code>Math</code> object.</strong></div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        1.
+        <input type="checkbox" id="ggttl10" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Use the Course Exercise Launcher application to open the start point to Exercise 3.1.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        2.
+        <input type="checkbox" id="ggttl11" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Open a <strong>Node.js command prompt</strong> and navigate to the <code>C:\Course\2323\Exercises\Ex3.1</code> folder.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        3.
+        <input type="checkbox" id="ggttl12" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Run the <code>npm start</code> command to launch the webpack development server.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        4.
+        <input type="checkbox" id="ggttl13" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Browse to <code>http://localhost:8080/</code>.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        5.
+        <input type="checkbox" id="ggttl14" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Return to the <code>index.js</code> file in WebStorm.
+      </div></div><div class="ExRow" style="padding-top:24px;"><div class="ExLeft"><img src="images/exMajorStep.jpg" /></div><div class="ExRight"><strong>Investigating <code>let</code> declarations</strong></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exInfo.jpg" /></div><div class="ExRight"><i>You've already declared a variable using the <code>let</code> construct in the last few exercises. Now it's time to see how it works compared to <code>var</code>.</i></div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        6.
+        <input type="checkbox" id="ggttl15" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Modify the code to wrap a block <code>{ ... }</code> around the <code>let</code> and <code>console.log(...)</code> statements.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>Here's how the <code>index.js</code> file should look, with the change in bold.</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+                  <code>'use strict';<br /><strong>{</strong><br />
+    let i = 43;<br />
+    console.log(i);<br /><strong>}</strong></code>
+              </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exQuestion.jpg" /></div><div class="ExRight"><i><p>What can you see in the browser?</p><p><input type="text" id="ggttl16" /></p></i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>You should see that the console output is logged as before.</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+        <div class="MediaDiv" style="max-width: 406px;"><img src="images/2323.3.1.3.png" /></div>
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        7.
+        <input type="checkbox" id="ggttl17" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Move the <code>console.log(...)</code> statement so it is just after the closing <code>}</code>.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exInfo.jpg" /></div><div class="ExRight"><i>Here's how the <code>index.js</code> file should look now:</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+                  <code>'use strict';<br />
+{<br />
+    let i = 43;<br />
+}<br /><strong>console.log(i);</strong></code>
+              </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exQuestion.jpg" /></div><div class="ExRight"><i><p>What can you see in the browser console?</p><p><input type="text" id="ggttl18" /></p></i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exWarning.jpg" /></div><div class="ExRight"><strong>You should notice an error. This is because <code>let</code> declarations are block-scoped.</strong></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+        <div class="MediaDiv" style="max-width: 406px;"><img src="images/2323.3.1.5.png" /></div>
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>This makes variables easier to deal with. With a <code>var</code> declaration, its scope is either a function or global.</i></div></div><div class="ExRow" style="padding-top:24px;"><div class="ExLeft"><img src="images/exMajorStep.jpg" /></div><div class="ExRight"><strong>Investigating <code>const</code> declarations</strong></div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        8.
+        <input type="checkbox" id="ggttl19" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Replace the <code>let</code> declaration with a <code>const</code> statement to declare a constant named <code>PLAYER_NAME</code> with your name as the string value.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        9.
+        <input type="checkbox" id="ggttl110" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Move the <code>console.log(...)</code> statement back into the block and print out the <code>PLAYER_NAME</code> constant.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>Here's how this should look:</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+                  <code>'use strict';<br />
+{<br />
+    <strong>const PLAYER_NAME = "Your Name";</strong><br />
+    console.log(<strong>PLAYER_NAME</strong>);<br />
+}</code>
+              </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exQuestion.jpg" /></div><div class="ExRight"><i><p>What can you see in the browser console?</p><p><input type="text" id="ggttl111" /></p></i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>You should see that your name is printed out:</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+        <div class="MediaDiv" style="max-width: 406px;"><img src="images/2323.3.1.8.png" /></div>
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        10.
+        <input type="checkbox" id="ggttl112" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Put a new statement between the constant declaration and <code>console.log(...)</code> to assign a new value to <code>PLAYER_NAME</code>.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exInfo.jpg" /></div><div class="ExRight"><i>Here's how the code should look:</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+                  <code>'use strict';<br />
+{<br />
+    const PLAYER_NAME = "Your Name";<br />
+    <strong>PLAYER_NAME = 'Amy Adams';</strong><br />
+    console.log(PLAYER_NAME);<br />
+}</code>
+              </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exQuestion.jpg" /></div><div class="ExRight"><i><p>What can you see in the browser?</p><p><input type="text" id="ggttl113" /></p></i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exWarning.jpg" /></div><div class="ExRight"><strong>You should see that the file can't be compiled, and the reason why.</strong></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+        <div class="MediaDiv" style="max-width: 463px;"><img src="images/2323.3.1.10.png" /></div>
+      </div></div><div class="ExRow" style="padding-top:24px;"><div class="ExLeft"><img src="images/exMajorStep.jpg" /></div><div class="ExRight"><strong>New <code>Number</code> and <code>Math</code> features</strong></div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        11.
+        <input type="checkbox" id="ggttl114" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Return to the <code>index.js</code> file and declare a new variable called <code>p</code>. Initialize it using the value <code>3.14</code>.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        12.
+        <input type="checkbox" id="ggttl115" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Use <code>Number.isInteger(...)</code> to log whether <code>p</code> is an integral number.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exQuestion.jpg" /></div><div class="ExRight"><i><p>What does it print out?</p><p><input type="text" id="ggttl116" /></p></i></div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        13.
+        <input type="checkbox" id="ggttl117" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Modify <code>p</code> to have the value <code>3</code>.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exQuestion.jpg" /></div><div class="ExRight"><i><p>What does it print out this time?</p><p><input type="text" id="ggttl118" /></p></i></div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        14.
+        <input type="checkbox" id="ggttl119" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Add this code to the <code>index.js</code> file: <code class="boldcode"><strong>console.log(0.3 - 0.2 === 0.1)</strong></code>
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exQuestion.jpg" /></div><div class="ExRight"><i><p>What do you think it should print out?</p><p><input type="text" id="ggttl120" /></p></i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exQuestion.jpg" /></div><div class="ExRight"><i><p>What does it actually print out?</p><p><input type="text" id="ggttl121" /></p></i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+        <div class="MediaDiv" style="max-width: 463px;"><img src="images/2323.3.1.14.png" /></div>
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exWarning.jpg" /></div><div class="ExRight"><strong>The reason for this is that 0.3, 0.2, and 0.1 aren't perfectly represented as floating point values.</strong></div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        15.
+        <input type="checkbox" id="ggttl122" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Modify the statement to use the <code>Number.EPSILON</code> constant and check whether the values are nearly equal.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>Here's how you might do this:</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+                  <code>console.log(Math.abs(0.3 - 0.2 - 0.1) &lt; Number.EPSILON);</code>
+              </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exQuestion.jpg" /></div><div class="ExRight"><i><p>What is printed out now?</p><p><input type="text" id="ggttl123" /></p></i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>You should see that this time, the expected output is produced. <code>Number.EPSILON</code> represents a small number that can be used with floating point calculations that may not be exactly correct.</i></div></div><div class="ExRow" style="padding-top:24px;"><div class="ExLeft"><img src="images/exFinish.jpg" /></div><div class="ExRight"><strong>Congratulations! You have completed the exercise.</strong></div></div><div class="ExRow"><div class="ExCentredText"><img src="images/ExStop.jpg" /><br /><strong><i>This is the end of the exercise.</i></strong></div></div>
+  </div>
+  <div class="ExFooter"><br/>Viewer version 1.0.1505.28</div>
+</form>
+</body>
+</html>
+
+

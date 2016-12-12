@@ -1,0 +1,221 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <!-- Exercise Manual Viewer Version 1.0.1402.5 -->
+    <meta charset="utf-8">
+    <title>Exercise Manual Viewer: Hands-On Exercise 3.2</title>
+    <link href="jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+    <link href="DynEx.css" rel="stylesheet" />
+    <script src="jquery-1.9.1.min.js"></script>
+    <script src="jquery-ui-1.10.3.custom.min.js"></script>
+    <script>
+        $(function ()
+        {
+            $("#accordion0, #accordion1, #accordion2, #accordion3").accordion({
+                header: "> div.ExFold",
+                collapsible: true,
+                active: false,
+                heightStyle: "content"
+            });
+
+            $("#accordion0, #accordion1, #accordion2, #accordion3").accordion(
+                "option",
+                "icons",
+                { 'header': 'ui-icon-triangle-1-e', 'activeHeader': 'ui-icon-triangle-1-se' });
+
+            $(".copyable code").mouseover(
+                function ()
+                {
+                    var codeElement = $(this);
+                    var preElement = codeElement.parent();
+                    var codeTag = codeElement[0];
+                    var pasteStr = codeTag.textContent ? 
+                        codeTag.textContent : codeTag.innerText;
+                    var copySite = $("#copysite");
+                    copySite.val(pasteStr/*unescapeHTML(pasteStr)*/);
+                    copySite.select();
+                    preElement.css("background-color", "#f0f0ff");
+                    preElement.css("border-color", "#4040ff");
+                    preElement.children("div").css("display", "block");
+                });
+
+            $(".copyable code").mouseout(
+                function()
+                {
+                    var codeElement = $(this);
+                    var preElement = codeElement.parent();
+                    preElement.css("background-color", "white");
+                    preElement.css("border-color", "white");
+                    preElement.children("div").css("display", "none");
+                });
+
+            var localStorageOK = hasLocalStorage();
+            if (hasLocalStorage)
+            {
+                $('input:checkbox').click(function () {
+                    var $this = $(this);
+                    if ($this.is(':checked')) {
+                        localStorage.setItem($this.attr("id"), "true");
+                    } else {
+                        localStorage.setItem($this.attr("id"), "false");
+                    }
+                });
+                $('input:radio').click(function () {
+                    var $this = $(this);
+                    var groupName = $this.attr('name');
+                    $('input:radio[name=' + groupName + ']')
+                        .each(function (index, radioItem) {
+                            var $radioItem = $(radioItem);
+                            if ($radioItem.is(':checked') && localStorageOK) {
+                                localStorage.setItem($radioItem.attr("id"), "true");
+                            } else {
+                                localStorage.setItem($radioItem.attr("id"), "false");
+                            }
+                        });
+                });
+                $('input:text, textarea').change(function () {
+                    var $this = $(this);
+                    var textVal = $this.val();
+                    localStorage.setItem($this.attr("id"), textVal);
+                });
+                $('input:checkbox, input:radio').each(function (index, chkItem) {
+                    var $chkItem = $(chkItem);
+                    var storedVal = localStorage.getItem($chkItem.attr("id"));
+                    $chkItem.prop("checked", storedVal && storedVal == "true");
+                });
+                $('input:text, textarea').each(function (index, inputItem) {
+                    var $inputItem = $(inputItem);
+                    var storedVal = localStorage.getItem($inputItem.attr("id"));
+                    if (storedVal)
+                        $inputItem.val(storedVal);
+                });
+            }
+        });
+
+    function unescapeHTML(str)
+    {
+        return String(str)
+            .replace(/\n/g, '\r\n')
+            .replace(/<[^>]*>/g, '')
+            .replace(/\&amp;/g, '\&')
+            .replace(/\&quot;/g, '\"')
+            .replace(/\&#39;/g, '\'')
+            .replace(/\&lt;/g, '<')
+            .replace(/\&gt;/g, '>')
+            .replace(/&nbsp;/g, ' ');
+    }
+
+    function escapeHTML(str)
+    {
+        return String(str)
+            .replace(/\n/g, '\r\n')
+            .replace(/\&/g, '&amp;')
+            .replace(/\"/g, '&quot;')
+            .replace(/\'/g, '&#39;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+    }
+    function hasLocalStorage() {
+        try {
+            return 'localStorage' in window && window['localStorage'] !== null;
+        } catch (e) {
+            return false;
+        }
+    }
+    </script>
+</head>
+<body>
+<form>
+    <div class="ExTitle">
+        <div style="width:70%; float:left;">
+            <strong>Hands-On Exercise 3.2</strong><br />
+            <strong>Strings and Templates</strong>
+        </div>
+        <div class="ExTitleLink">
+            <a href="index.html">Exercise list &hellip;</a>
+        </div>
+    </div>
+    <div class="ExHidden"><textarea style="width:1px; height:1px;" id="copysite"></textarea></div>
+    <br /><br />
+    <br /><br />
+    <br /><br />
+    <br /><br />
+  <div style="display:table;">
+    <div class="ExRow"><div class="ExText"><strong>Objectives</strong></div></div><div class="ExRow"><div class="ExText"><strong>In this exercise, you will explore new methods added to the string data type in ECMAScript 2015, and create template strings that can be used to format output.</strong></div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        1.
+        <input type="checkbox" id="bhy5jt0" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Use the Course Exercise Launcher application to open the start point to Exercise 3.2.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        2.
+        <input type="checkbox" id="bhy5jt1" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Open a <strong>Node.js command prompt</strong> and navigate to the <code>C:\Course\2323\Exercises\Ex3.2</code> folder.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        3.
+        <input type="checkbox" id="bhy5jt2" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Run the <code>npm start</code> command to launch the webpack development server.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        4.
+        <input type="checkbox" id="bhy5jt3" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Browse to <code>http://localhost:8080/</code>.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        5.
+        <input type="checkbox" id="bhy5jt4" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Return to the <code>index.js</code> file in WebStorm.
+      </div></div><div class="ExRow" style="padding-top:24px;"><div class="ExLeft"><img src="images/exMajorStep.jpg" /></div><div class="ExRight"><strong>Investigating new <code>String</code> functionality</strong></div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        6.
+        <input type="checkbox" id="bhy5jt5" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Modify the <code>PLAYER_NAME</code> constant to your name.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        7.
+        <input type="checkbox" id="bhy5jt6" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Use <code>console.log(...)</code> to print out the result of evaluating <code>PLAYER_NAME.startsWith('value')</code>, <code>.endsWith('value')</code> and <code>.includes('value')</code>, substituting appropriate string literals that would result in <code>true</code> or <code>false</code> values.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>Here's how your code might look:</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+                  <p><code>'use strict';</code></p><p><code>const PLAYER_NAME = "Your Name";<br />
+console.log(PLAYER_NAME);</code></p><p> </p><p><strong><code>// true values<br />
+console.log(PLAYER_NAME.startsWith('Y'));<br />
+console.log(PLAYER_NAME.endsWith('e'));<br />
+console.log(PLAYER_NAME.includes('our'));</code></strong></p><p> </p><p><strong><code>// false values<br />
+console.log(PLAYER_NAME.startsWith('y'));<br />
+console.log(PLAYER_NAME.endsWith('Me'));<br />
+console.log(PLAYER_NAME.includes('mine'));</code></strong></p>
+              </div></div><div class="ExRow" style="padding-top:24px;"><div class="ExLeft"><img src="images/exMajorStep.jpg" /></div><div class="ExRight"><strong>Investigating string templates</strong></div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        8.
+        <input type="checkbox" id="bhy5jt7" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Return to the <code>index.js</code> file, and declare a variable called <code>welcomeMessage</code> using a string template with the value <code>`&lt;h1&gt;Welcome to Question Time&lt;/h1&gt;`</code>.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exWarning.jpg" /></div><div class="ExRight"><strong>The delimeter for string templates is the back-tick `, not the single-quote '.</strong></div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        9.
+        <input type="checkbox" id="bhy5jt8" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Declare a constant called <code>APP_TARGET</code>. Initialize it using the DOM method <code>document.getElementById('es-app')</code>;.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        10.
+        <input type="checkbox" id="bhy5jt9" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Assign the <code>welcomeMessage</code> to <code>APP_TARGET.innerHTML</code>.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>Here's how the <code>index.js</code> file should look, with the new code in bold:</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+                  <p><code>'use strict';</code></p><p><code>const PLAYER_NAME = "Your Name";<br />
+console.log(PLAYER_NAME);</code></p><p> </p><p><code>// true values<br />
+console.log(PLAYER_NAME.startsWith('Y'));<br />
+console.log(PLAYER_NAME.endsWith('e'));<br />
+console.log(PLAYER_NAME.includes('our'));</code></p><p> </p><p><code>// false values<br />
+console.log(PLAYER_NAME.startsWith('y'));<br />
+console.log(PLAYER_NAME.endsWith('Me'));<br />
+console.log(PLAYER_NAME.includes('mine'));</code></p><p><br /><code><strong>let welcomeMessage = `&lt;h1&gt;Welcome to Question Time&lt;/h1&gt;`;<br />
+const APP_TARGET = document.getElementById('es-app');<br />
+APP_TARGET.innerHTML = welcomeMessage;</strong></code></p>
+              </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exQuestion.jpg" /></div><div class="ExRight"><i><p>What can you see?</p><p><input type="text" id="bhy5jt10" /></p></i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>You should see that the welcome message is displayed in the browser.</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+        <div class="MediaDiv" style="max-width: 463px;"><img src="images/2323.3.2.10.png" /></div>
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        11.
+        <input type="checkbox" id="bhy5jt11" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Return to the <code>index.js</code> file, and modify the <code>welcomeMessage</code> variable to include the interpolated expression <code>${PLAYER_NAME}</code>.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>Here's how the <code>welcomeMessage</code> variable should look:</i></div></div><div class="ExRow"><div class="ExText">
+                  <code>let welcomeMessage = `&lt;h1&gt;Welcome to Question Time <strong>${PLAYER_NAME}</strong>&lt;/h1&gt;`;</code>
+              </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exQuestion.jpg" /></div><div class="ExRight"><i><p>What can you see in the browser?</p><p><input type="text" id="bhy5jt12" /></p></i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>You should see that the value of the <code>PLAYER_NAME</code> is inserted into the template.</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+        <div class="MediaDiv" style="max-width: 463px;"><img src="images/2323.3.2.12.png" /></div>
+      </div></div><div class="ExRow" style="padding-top:24px;"><div class="ExLeft"><img src="images/exFinish.jpg" /></div><div class="ExRight"><strong>Congratulations! You have completed the exercise.</strong></div></div><div class="ExRow"><div class="ExCentredText"><img src="images/ExStop.jpg" /><br /><strong><i>This is the end of the exercise.</i></strong></div></div>
+  </div>
+  <div class="ExFooter"><br/>Viewer version 1.0.1505.28</div>
+</form>
+</body>
+</html>
+
+
