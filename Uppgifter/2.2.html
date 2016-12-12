@@ -1,0 +1,252 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <!-- Exercise Manual Viewer Version 1.0.1402.5 -->
+    <meta charset="utf-8">
+    <title>Exercise Manual Viewer: Hands-On Exercise 2.2</title>
+    <link href="jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+    <link href="DynEx.css" rel="stylesheet" />
+    <script src="jquery-1.9.1.min.js"></script>
+    <script src="jquery-ui-1.10.3.custom.min.js"></script>
+    <script>
+        $(function ()
+        {
+            $("#accordion0, #accordion1, #accordion2, #accordion3").accordion({
+                header: "> div.ExFold",
+                collapsible: true,
+                active: false,
+                heightStyle: "content"
+            });
+
+            $("#accordion0, #accordion1, #accordion2, #accordion3").accordion(
+                "option",
+                "icons",
+                { 'header': 'ui-icon-triangle-1-e', 'activeHeader': 'ui-icon-triangle-1-se' });
+
+            $(".copyable code").mouseover(
+                function ()
+                {
+                    var codeElement = $(this);
+                    var preElement = codeElement.parent();
+                    var codeTag = codeElement[0];
+                    var pasteStr = codeTag.textContent ? 
+                        codeTag.textContent : codeTag.innerText;
+                    var copySite = $("#copysite");
+                    copySite.val(pasteStr/*unescapeHTML(pasteStr)*/);
+                    copySite.select();
+                    preElement.css("background-color", "#f0f0ff");
+                    preElement.css("border-color", "#4040ff");
+                    preElement.children("div").css("display", "block");
+                });
+
+            $(".copyable code").mouseout(
+                function()
+                {
+                    var codeElement = $(this);
+                    var preElement = codeElement.parent();
+                    preElement.css("background-color", "white");
+                    preElement.css("border-color", "white");
+                    preElement.children("div").css("display", "none");
+                });
+
+            var localStorageOK = hasLocalStorage();
+            if (hasLocalStorage)
+            {
+                $('input:checkbox').click(function () {
+                    var $this = $(this);
+                    if ($this.is(':checked')) {
+                        localStorage.setItem($this.attr("id"), "true");
+                    } else {
+                        localStorage.setItem($this.attr("id"), "false");
+                    }
+                });
+                $('input:radio').click(function () {
+                    var $this = $(this);
+                    var groupName = $this.attr('name');
+                    $('input:radio[name=' + groupName + ']')
+                        .each(function (index, radioItem) {
+                            var $radioItem = $(radioItem);
+                            if ($radioItem.is(':checked') && localStorageOK) {
+                                localStorage.setItem($radioItem.attr("id"), "true");
+                            } else {
+                                localStorage.setItem($radioItem.attr("id"), "false");
+                            }
+                        });
+                });
+                $('input:text, textarea').change(function () {
+                    var $this = $(this);
+                    var textVal = $this.val();
+                    localStorage.setItem($this.attr("id"), textVal);
+                });
+                $('input:checkbox, input:radio').each(function (index, chkItem) {
+                    var $chkItem = $(chkItem);
+                    var storedVal = localStorage.getItem($chkItem.attr("id"));
+                    $chkItem.prop("checked", storedVal && storedVal == "true");
+                });
+                $('input:text, textarea').each(function (index, inputItem) {
+                    var $inputItem = $(inputItem);
+                    var storedVal = localStorage.getItem($inputItem.attr("id"));
+                    if (storedVal)
+                        $inputItem.val(storedVal);
+                });
+            }
+        });
+
+    function unescapeHTML(str)
+    {
+        return String(str)
+            .replace(/\n/g, '\r\n')
+            .replace(/<[^>]*>/g, '')
+            .replace(/\&amp;/g, '\&')
+            .replace(/\&quot;/g, '\"')
+            .replace(/\&#39;/g, '\'')
+            .replace(/\&lt;/g, '<')
+            .replace(/\&gt;/g, '>')
+            .replace(/&nbsp;/g, ' ');
+    }
+
+    function escapeHTML(str)
+    {
+        return String(str)
+            .replace(/\n/g, '\r\n')
+            .replace(/\&/g, '&amp;')
+            .replace(/\"/g, '&quot;')
+            .replace(/\'/g, '&#39;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+    }
+    function hasLocalStorage() {
+        try {
+            return 'localStorage' in window && window['localStorage'] !== null;
+        } catch (e) {
+            return false;
+        }
+    }
+    </script>
+</head>
+<body>
+<form>
+    <div class="ExTitle">
+        <div style="width:70%; float:left;">
+            <strong>Hands-On Exercise 2.2</strong><br />
+            <strong>Running ECMAScript 2015 in Node.js Using Babel CLI</strong>
+        </div>
+        <div class="ExTitleLink">
+            <a href="index.html">Exercise list &hellip;</a>
+        </div>
+    </div>
+    <div class="ExHidden"><textarea style="width:1px; height:1px;" id="copysite"></textarea></div>
+    <br /><br />
+    <br /><br />
+    <br /><br />
+    <br /><br />
+  <div style="display:table;">
+    <div class="ExRow"><div class="ExText"><strong>Objectives</strong></div></div><div class="ExRow"><div class="ExText"><strong>In this exercise, you will configure an npm package that can run ES2015 code using Node.js and the Babel transpiler.</strong></div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        1.
+        <input type="checkbox" id="drxtam0" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Use the Course Exercise Launcher application to open the start point for Exercise 2.2.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exInfo.jpg" /></div><div class="ExRight"><i>WebStorm will launch. However, first we need to do some work in the Node.js command prompt.</i></div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        2.
+        <input type="checkbox" id="drxtam1" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Open a <strong>Node.js command prompt</strong> using the icon on the taskbar or Start menu.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        3.
+        <input type="checkbox" id="drxtam2" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Use the <code>cd</code> command to move to the <code>C:\Course\2323\Exercises\Ex2.2</code> folder.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        4.
+        <input type="checkbox" id="drxtam3" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Enter <code>npm init</code> to create a new package using a wizard.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>Here's how this should look:</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+        <div class="MediaDiv" style="max-width: 979px;"><img src="images/2323.2.2.2.png" /></div>
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        5.
+        <input type="checkbox" id="drxtam4" /></div><div class="ExRight" style="vertical-align:baseline;">
+        <p>For each step in the <code>npm init</code> script, enter the following values.</p><p> </p><table border="1" cellpadding="8" cellspacing="0" style="width:80%"><tbody><tr><td scope="col" style="width:35%"><strong>Prompt</strong></td><td scope="col" style="width:65%"><strong>Response</strong></td></tr><tr><td><strong><code>name: (Ex2.2)</code></strong></td><td><strong><code>question-time&lt;Enter&gt;</code></strong></td></tr><tr><td><strong><code>version: (1.0.0)</code></strong></td><td><strong><code>&lt;Enter&gt;</code></strong></td></tr><tr><td><strong><code>description:</code></strong></td><td><strong><code>An application to test what you know about ES2015 &lt;Enter&gt;</code></strong></td></tr><tr><td><strong><code>entry point: (index.js)</code></strong></td><td><strong><code>&lt;Enter&gt;</code></strong></td></tr><tr><td><strong><code>test command:</code></strong></td><td><strong><code>test&lt;Enter&gt;</code></strong></td></tr><tr><td><strong><code>git repository:</code></strong></td><td><strong><code>file:///Course/2323/git&lt;Enter&gt;</code></strong></td></tr><tr><td><strong><code>keywords:</code></strong></td><td><strong><code>questions, answers, ES2015&lt;Enter&gt;</code></strong></td></tr><tr><td><strong><code>author:</code></strong></td><td><strong><code>&lt;Your Name&gt;&lt;Enter&gt;</code></strong></td></tr><tr><td><strong><code>license:</code></strong></td><td><strong><code>&lt;Enter&gt;</code></strong></td></tr><tr><td><strong><code>Is this ok? (yes)</code></strong></td><td><strong><code>&lt;Enter&gt;</code></strong></td></tr></tbody></table><p><strong><code>npm init</code> script</strong></p>
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        6.
+        <input type="checkbox" id="drxtam5" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Return to WebStorm and open the <code>package.json</code> file by double-clicking it in the Project window on the left side of the application.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exInfo.jpg" /></div><div class="ExRight"><i>You may need to right-click the Ex2.2 item in the Project window and select Synchronize 'Ex2.2' to see the <code>package.json</code> file.</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>It should look similar to the following:</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+                  <small><code>{<br />
+  "name": "question-time",<br />
+  "version": "1.0.0",<br />
+  "description": "An application to test what you know about ES2015",<br />
+  "main": "index.js",<br />
+  "scripts": {<br />
+    "test": "test"<br />
+  },<br />
+  "repository": {<br />
+    "type": "git",<br />
+    "url": "file:///Course/2323/git"<br />
+  },<br />
+  "keywords": [<br />
+    "ES2015",<br />
+    "questions",<br />
+    "answers"<br />
+  ],<br />
+  "author": "Your Name",<br />
+  "license": "ISC"<br />
+}</code></small>
+              </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        7.
+        <input type="checkbox" id="drxtam6" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Return to the Node.js command prompt window and enter <code class="boldcode">npm install --save-dev babel-cli</code>
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>You should see that a series of packages will be installed. It may take a few minutes.</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+        <div class="MediaDiv" style="max-width: 979px;"><img src="images/2323.2.2.5.png" /></div>
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        8.
+        <input type="checkbox" id="drxtam7" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Similarly, enter <strong><code>npm install --save-dev babel-preset-es2015</code></strong> to install a set of transforms for various ES2015 syntax features.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        9.
+        <input type="checkbox" id="drxtam8" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Return to WebStorm and move to the <code>.babelrc</code> file. Enter <strong><code>{ "presets": ["es2015"] }</code></strong> as the file's content.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exInfo.jpg" /></div><div class="ExRight"><i>This file tells Babel which presets to use when transpiling source files. In our application, we will be using the ES2015 preset.</i></div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        10.
+        <input type="checkbox" id="drxtam9" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Return to the <code>package.json</code> file and add a new entry to the <code>"scripts"</code> section just after the <code>"test" : "test"</code> command. The new command should be called <code>"start"</code>, and the value should be <code>"babel-node src/index.js"</code>.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>Here's how the <code>package.json</code> file should look, with the latest changes in bold.</i></div></div><div class="ExRow"><div class="ExText">
+                  <small><code>{<br />
+  "name": "question-time",<br />
+  "version": "1.0.0",<br />
+  "description": "An application to test what you know about ES2015",<br />
+  "main": "index.js",<br />
+  "scripts": {<br />
+    "test": "test"<strong>,<br />
+    "start": "babel-node src/index.js"</strong><br />
+  },<br />
+  "repository": {<br />
+    "type": "git",<br />
+    "url": "file:///Course/2323/git"<br />
+  },<br />
+  "keywords": [<br />
+    "ES2015",<br />
+    "questions",<br />
+    "answers"<br />
+  ],<br />
+  "author": "Your Name",<br />
+  "license": "ISC",<br />
+  "devDependencies": {<br />
+    "babel-cli": "^6.5.1",<br />
+    "babel-preset-es2015": "^6.5.0"<br />
+  }<br />
+}</code></small>
+              </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        11.
+        <input type="checkbox" id="drxtam10" /></div><div class="ExRight" style="vertical-align:baseline;">
+        <p>Move to the <code>index.js</code> file, and enter the following code:</p><p> </p><p><strong><code>'use strict';</code></strong></p><p><strong><code>let i = 42; </code></strong></p><p><strong><code>console.log(i);</code></strong></p>
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        12.
+        <input type="checkbox" id="drxtam11" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Return to the Node.js command prompt, and run the ES2015 code using <code>npm start</code>.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>You should see the output in the command window.</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+        <div class="MediaDiv" style="max-width: 979px;"><img src="images/2323.2.2.11.1.png" /></div>
+      </div></div><div class="ExRow" style="padding-top:24px;"><div class="ExLeft"><img src="images/exFinish.jpg" /></div><div class="ExRight"><strong>Congratulations! You have completed the exercise.</strong></div></div><div class="ExRow"><div class="ExCentredText"><img src="images/ExStop.jpg" /><br /><strong><i>This is the end of the exercise.</i></strong></div></div>
+  </div>
+  <div class="ExFooter"><br/>Viewer version 1.0.1505.28</div>
+</form>
+</body>
+</html>
+
+

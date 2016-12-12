@@ -1,0 +1,222 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <!-- Exercise Manual Viewer Version 1.0.1402.5 -->
+    <meta charset="utf-8">
+    <title>Exercise Manual Viewer: Hands-On Exercise 2.1</title>
+    <link href="jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+    <link href="DynEx.css" rel="stylesheet" />
+    <script src="jquery-1.9.1.min.js"></script>
+    <script src="jquery-ui-1.10.3.custom.min.js"></script>
+    <script>
+        $(function ()
+        {
+            $("#accordion0, #accordion1, #accordion2, #accordion3").accordion({
+                header: "> div.ExFold",
+                collapsible: true,
+                active: false,
+                heightStyle: "content"
+            });
+
+            $("#accordion0, #accordion1, #accordion2, #accordion3").accordion(
+                "option",
+                "icons",
+                { 'header': 'ui-icon-triangle-1-e', 'activeHeader': 'ui-icon-triangle-1-se' });
+
+            $(".copyable code").mouseover(
+                function ()
+                {
+                    var codeElement = $(this);
+                    var preElement = codeElement.parent();
+                    var codeTag = codeElement[0];
+                    var pasteStr = codeTag.textContent ? 
+                        codeTag.textContent : codeTag.innerText;
+                    var copySite = $("#copysite");
+                    copySite.val(pasteStr/*unescapeHTML(pasteStr)*/);
+                    copySite.select();
+                    preElement.css("background-color", "#f0f0ff");
+                    preElement.css("border-color", "#4040ff");
+                    preElement.children("div").css("display", "block");
+                });
+
+            $(".copyable code").mouseout(
+                function()
+                {
+                    var codeElement = $(this);
+                    var preElement = codeElement.parent();
+                    preElement.css("background-color", "white");
+                    preElement.css("border-color", "white");
+                    preElement.children("div").css("display", "none");
+                });
+
+            var localStorageOK = hasLocalStorage();
+            if (hasLocalStorage)
+            {
+                $('input:checkbox').click(function () {
+                    var $this = $(this);
+                    if ($this.is(':checked')) {
+                        localStorage.setItem($this.attr("id"), "true");
+                    } else {
+                        localStorage.setItem($this.attr("id"), "false");
+                    }
+                });
+                $('input:radio').click(function () {
+                    var $this = $(this);
+                    var groupName = $this.attr('name');
+                    $('input:radio[name=' + groupName + ']')
+                        .each(function (index, radioItem) {
+                            var $radioItem = $(radioItem);
+                            if ($radioItem.is(':checked') && localStorageOK) {
+                                localStorage.setItem($radioItem.attr("id"), "true");
+                            } else {
+                                localStorage.setItem($radioItem.attr("id"), "false");
+                            }
+                        });
+                });
+                $('input:text, textarea').change(function () {
+                    var $this = $(this);
+                    var textVal = $this.val();
+                    localStorage.setItem($this.attr("id"), textVal);
+                });
+                $('input:checkbox, input:radio').each(function (index, chkItem) {
+                    var $chkItem = $(chkItem);
+                    var storedVal = localStorage.getItem($chkItem.attr("id"));
+                    $chkItem.prop("checked", storedVal && storedVal == "true");
+                });
+                $('input:text, textarea').each(function (index, inputItem) {
+                    var $inputItem = $(inputItem);
+                    var storedVal = localStorage.getItem($inputItem.attr("id"));
+                    if (storedVal)
+                        $inputItem.val(storedVal);
+                });
+            }
+        });
+
+    function unescapeHTML(str)
+    {
+        return String(str)
+            .replace(/\n/g, '\r\n')
+            .replace(/<[^>]*>/g, '')
+            .replace(/\&amp;/g, '\&')
+            .replace(/\&quot;/g, '\"')
+            .replace(/\&#39;/g, '\'')
+            .replace(/\&lt;/g, '<')
+            .replace(/\&gt;/g, '>')
+            .replace(/&nbsp;/g, ' ');
+    }
+
+    function escapeHTML(str)
+    {
+        return String(str)
+            .replace(/\n/g, '\r\n')
+            .replace(/\&/g, '&amp;')
+            .replace(/\"/g, '&quot;')
+            .replace(/\'/g, '&#39;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+    }
+    function hasLocalStorage() {
+        try {
+            return 'localStorage' in window && window['localStorage'] !== null;
+        } catch (e) {
+            return false;
+        }
+    }
+    </script>
+</head>
+<body>
+<form>
+    <div class="ExTitle">
+        <div style="width:70%; float:left;">
+            <strong>Hands-On Exercise 2.1</strong><br />
+            <strong>Transpiling ECMAScript 2015 in the Browser</strong>
+        </div>
+        <div class="ExTitleLink">
+            <a href="index.html">Exercise list &hellip;</a>
+        </div>
+    </div>
+    <div class="ExHidden"><textarea style="width:1px; height:1px;" id="copysite"></textarea></div>
+    <br /><br />
+    <br /><br />
+    <br /><br />
+    <br /><br />
+  <div style="display:table;">
+    <div class="ExRow"><div class="ExText"><strong>Objectives</strong></div></div><div class="ExRow"><div class="ExText"><strong>In this exercise, you will write some ECMAScript 2015 code in an HTML file <code>&lt;script&gt;...&lt;/script&gt;</code> block, and try to run it directly in the browser.</strong></div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        1.
+        <input type="checkbox" id="ixfcu30" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Use the Course Exercise Launcher application to open the start point for Exercise 2.1.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exInfo.jpg" /></div><div class="ExRight"><i>We've included the Course Exercise Launcher to make it easy to find the correct files for each exercise. Select it from the Start menu or taskbar.</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+                  Select <strong>Exercise 2.1</strong> from the combo-box at the top of the UI.
+              </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+                  Click the <strong>Exercise</strong> item.
+              </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>You should find that JetBrains WebStorm will launch with the <code>index.html</code> file open in the editor.</i></div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        2.
+        <input type="checkbox" id="ixfcu31" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Move to the <code>&lt;script&gt;...&lt;/script&gt;</code> block, and just after the opening tag, enter the following ECMAScript code.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+                  <p><strong><code>let i = 42;</code></strong></p><p><strong><code>console.log(i);</code></strong></p>
+              </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        3.
+        <input type="checkbox" id="ixfcu32" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Right-click the <code>index.html</code> file and select <strong>Open in Browser | Chrome</strong>.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        4.
+        <input type="checkbox" id="ixfcu33" /></div><div class="ExRight" style="vertical-align:baseline;">
+        When Chrome opens, press the <code>&lt;F12&gt;</code> key or the <code>&lt;Shift&gt;&lt;Ctrl&gt;&lt;I&gt;</code> key combination to display the developer tools.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        5.
+        <input type="checkbox" id="ixfcu34" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Select the <strong>Console</strong> tab.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exQuestion.jpg" /></div><div class="ExRight"><i><p>What can you see?</p><p><input type="text" id="ixfcu35" /></p></i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exWarning.jpg" /></div><div class="ExRight"><strong>You should see an error in the console (if Chrome hasn't been updated since this activity was authored using Chrome 48!)</strong></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+        <div class="MediaDiv" style="max-width: 542px;"><img src="images/2323.2.1.6.png" /></div>
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exInfo.jpg" /></div><div class="ExRight"><i>If Chrome has automatically updated to a version newer than 48, then we have put an archived version of Chrome 48 in the <code>C:\Course\Common\software</code> folder that you can use to test this exercise.</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+        <div class="MediaDiv" style="max-width: 542px;"><img src="images/2323.2.1.6.1.png" /></div>
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        6.
+        <input type="checkbox" id="ixfcu36" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Return to WebStorm. Open the <code>index.html</code> page using Internet Explorer by right-clicking the page and selecting <strong>Open in Browser | Internet Explorer</strong>.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        7.
+        <input type="checkbox" id="ixfcu37" /></div><div class="ExRight" style="vertical-align:baseline;">
+        When Internet Explorer opens, press the <code>&lt;F12&gt;</code> key to open the Developer Tools window, and select the <strong>Console</strong> tab.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>This time, you should see that the code works as expected.</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+        <div class="MediaDiv" style="max-width: 860px;"><img src="images/2323.2.1.8.png" /></div>
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exWarning.jpg" /></div><div class="ExRight"><strong>It's hard to use ECMAScript 2015 features reliably in browsers.</strong></div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        8.
+        <input type="checkbox" id="ixfcu38" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Return to WebStorm, and before the <code>&lt;script&gt;...&lt;/script&gt;</code> block add a <code>&lt;script src="..."&gt;&lt;/script&gt;</code> element that references the <code>js/babel.browser.js</code> file.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exInfo.jpg" /></div><div class="ExRight"><i>This file provides an browser-hosted ECMAScript source-to-source compiler (or transpiler) that converts the ES2015 code to ES5 that can run in a browser.</i></div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        9.
+        <input type="checkbox" id="ixfcu39" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Modify the <code>&lt;script&gt;...&lt;/script&gt;</code> block's start tag by adding a <code>type="text/babel"</code> attribute.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>Here's how the complete <code>index.html</code> file should look with the latest changes in bold.</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+                  <code>&lt;!DOCTYPE html&gt;<br />
+&lt;html&gt;<br />
+  &lt;head&gt;<br />
+    &lt;meta charset="utf-8"&gt;<br />
+    &lt;title&gt;Welcome to Question Time&lt;/title&gt;<br />
+  &lt;/head&gt;<br />
+  &lt;body&gt;<br />
+    &lt;div id="es-app"&gt;&lt;/div&gt;<br />
+    <br />
+    <strong>&lt;script src="js/babel.browser.js"&gt;&lt;/script&gt;</strong><br />
+    &lt;script <strong>type="text/babel"</strong>&gt;<br />
+      let i = 42;<br />
+      console.log(i);<br />
+    &lt;/script&gt;<br />
+  &lt;/body&gt;<br />
+&lt;/html&gt;</code>
+              </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        10.
+        <input type="checkbox" id="ixfcu310" /></div><div class="ExRight" style="vertical-align:baseline;">
+        View the <code>index.html</code> page in Chrome one final time.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>This time, the output should display as expected.</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+        <div class="MediaDiv" style="max-width: 542px;"><img src="images/2323.2.1.10.png" /></div>
+      </div></div><div class="ExRow" style="padding-top:24px;"><div class="ExLeft"><img src="images/exFinish.jpg" /></div><div class="ExRight"><strong>Congratulations! You have completed the exercise.</strong></div></div><div class="ExRow"><div class="ExCentredText"><img src="images/ExStop.jpg" /><br /><strong><i>This is the end of the exercise.</i></strong></div></div>
+  </div>
+  <div class="ExFooter"><br/>Viewer version 1.0.1505.28</div>
+</form>
+</body>
+</html>
+
+

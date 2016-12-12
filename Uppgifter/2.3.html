@@ -1,0 +1,259 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <!-- Exercise Manual Viewer Version 1.0.1402.5 -->
+    <meta charset="utf-8">
+    <title>Exercise Manual Viewer: Hands-On Exercise 2.3</title>
+    <link href="jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+    <link href="DynEx.css" rel="stylesheet" />
+    <script src="jquery-1.9.1.min.js"></script>
+    <script src="jquery-ui-1.10.3.custom.min.js"></script>
+    <script>
+        $(function ()
+        {
+            $("#accordion0, #accordion1, #accordion2, #accordion3").accordion({
+                header: "> div.ExFold",
+                collapsible: true,
+                active: false,
+                heightStyle: "content"
+            });
+
+            $("#accordion0, #accordion1, #accordion2, #accordion3").accordion(
+                "option",
+                "icons",
+                { 'header': 'ui-icon-triangle-1-e', 'activeHeader': 'ui-icon-triangle-1-se' });
+
+            $(".copyable code").mouseover(
+                function ()
+                {
+                    var codeElement = $(this);
+                    var preElement = codeElement.parent();
+                    var codeTag = codeElement[0];
+                    var pasteStr = codeTag.textContent ? 
+                        codeTag.textContent : codeTag.innerText;
+                    var copySite = $("#copysite");
+                    copySite.val(pasteStr/*unescapeHTML(pasteStr)*/);
+                    copySite.select();
+                    preElement.css("background-color", "#f0f0ff");
+                    preElement.css("border-color", "#4040ff");
+                    preElement.children("div").css("display", "block");
+                });
+
+            $(".copyable code").mouseout(
+                function()
+                {
+                    var codeElement = $(this);
+                    var preElement = codeElement.parent();
+                    preElement.css("background-color", "white");
+                    preElement.css("border-color", "white");
+                    preElement.children("div").css("display", "none");
+                });
+
+            var localStorageOK = hasLocalStorage();
+            if (hasLocalStorage)
+            {
+                $('input:checkbox').click(function () {
+                    var $this = $(this);
+                    if ($this.is(':checked')) {
+                        localStorage.setItem($this.attr("id"), "true");
+                    } else {
+                        localStorage.setItem($this.attr("id"), "false");
+                    }
+                });
+                $('input:radio').click(function () {
+                    var $this = $(this);
+                    var groupName = $this.attr('name');
+                    $('input:radio[name=' + groupName + ']')
+                        .each(function (index, radioItem) {
+                            var $radioItem = $(radioItem);
+                            if ($radioItem.is(':checked') && localStorageOK) {
+                                localStorage.setItem($radioItem.attr("id"), "true");
+                            } else {
+                                localStorage.setItem($radioItem.attr("id"), "false");
+                            }
+                        });
+                });
+                $('input:text, textarea').change(function () {
+                    var $this = $(this);
+                    var textVal = $this.val();
+                    localStorage.setItem($this.attr("id"), textVal);
+                });
+                $('input:checkbox, input:radio').each(function (index, chkItem) {
+                    var $chkItem = $(chkItem);
+                    var storedVal = localStorage.getItem($chkItem.attr("id"));
+                    $chkItem.prop("checked", storedVal && storedVal == "true");
+                });
+                $('input:text, textarea').each(function (index, inputItem) {
+                    var $inputItem = $(inputItem);
+                    var storedVal = localStorage.getItem($inputItem.attr("id"));
+                    if (storedVal)
+                        $inputItem.val(storedVal);
+                });
+            }
+        });
+
+    function unescapeHTML(str)
+    {
+        return String(str)
+            .replace(/\n/g, '\r\n')
+            .replace(/<[^>]*>/g, '')
+            .replace(/\&amp;/g, '\&')
+            .replace(/\&quot;/g, '\"')
+            .replace(/\&#39;/g, '\'')
+            .replace(/\&lt;/g, '<')
+            .replace(/\&gt;/g, '>')
+            .replace(/&nbsp;/g, ' ');
+    }
+
+    function escapeHTML(str)
+    {
+        return String(str)
+            .replace(/\n/g, '\r\n')
+            .replace(/\&/g, '&amp;')
+            .replace(/\"/g, '&quot;')
+            .replace(/\'/g, '&#39;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+    }
+    function hasLocalStorage() {
+        try {
+            return 'localStorage' in window && window['localStorage'] !== null;
+        } catch (e) {
+            return false;
+        }
+    }
+    </script>
+</head>
+<body>
+<form>
+    <div class="ExTitle">
+        <div style="width:70%; float:left;">
+            <strong>Hands-On Exercise 2.3</strong><br />
+            <strong>Building ES2015 Using Webpack</strong>
+        </div>
+        <div class="ExTitleLink">
+            <a href="index.html">Exercise list &hellip;</a>
+        </div>
+    </div>
+    <div class="ExHidden"><textarea style="width:1px; height:1px;" id="copysite"></textarea></div>
+    <br /><br />
+    <br /><br />
+    <br /><br />
+    <br /><br />
+  <div style="display:table;">
+    <div class="ExRow"><div class="ExText"><strong>Objectives</strong></div></div><div class="ExRow"><div class="ExText"><strong>In this exercise, you will configure webpack to build and bundle ES2015 code and run a development web server to execute the result in the browser.</strong></div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        1.
+        <input type="checkbox" id="gzfu330" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Use the Course Exercise Launcher application to open the start point for Exercise 2.3.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        2.
+        <input type="checkbox" id="gzfu331" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Open a <strong>Node.js command prompt</strong> and navigate to the <code>C:\Course\2323\Exercises\Ex2.3</code> folder.
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        3.
+        <input type="checkbox" id="gzfu332" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Return to WebStorm and move to the <code>package.json</code> file.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exInfo.jpg" /></div><div class="ExRight"><i>We've modified the set of packages in the <code>"devDependencies"</code> section to include <code>"babel-core"</code>, which contains the core Babel transpiler. In addtion, we've added <code>"webpack"</code>, <code>"webpack-dev-server"</code>, and <code>"babel-loader"</code>. These packages will enable you to run the webpack bundling tool with a simple web server that will allow you to view the output in a browser.</i></div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        4.
+        <input type="checkbox" id="gzfu333" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Modify the <code>"start"</code> script from <code>"babel-node src/index.js"</code> to <code>"webpack-dev-server --inline"</code>.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exInfo.jpg" /></div><div class="ExRight"><i>A browser connected to the webpack development server automatically reloads the page when any source code file changes.</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>Here's how the <code>package.json</code> file should look, with the change in bold.</i></div></div><div class="ExRow"><div class="ExText">
+                  <small><code>{<br />
+  "name": "question-time",<br />
+  "version": "1.0.0",<br />
+  "description": "An application to test what you know about ES2015",<br />
+  "main": "index.js",<br />
+  "scripts": {<br />
+    "test": "test",<br />
+    "start": <strong>"webpack-dev-server --inline"</strong><br />
+  },<br />
+  "repository": {<br />
+    "type": "git",<br />
+    "url": "file:///Course/2323/git"<br />
+  },<br />
+  "keywords": [<br />
+    "ES2015",<br />
+    "questions",<br />
+    "answers"<br />
+  ],<br />
+  "author": "Your Name",<br />
+  "license": "ISC",<br />
+  "devDependencies": {<br />
+    "babel-core": "^6.5.0",<br />
+    "babel-preset-es2015": "^6.5.0",<br />
+    "babel-loader": "^6.2.4",<br />
+    "webpack": "^1.12.14",<br />
+    "webpack-dev-server": "^1.14.1"<br />
+  }<br />
+}</code></small>
+              </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        5.
+        <input type="checkbox" id="gzfu334" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Move to the <code>webpack.config.js</code> file.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exInfo.jpg" /></div><div class="ExRight"><i>This will contain JavaScript code that produces a bundled output file from one or more input files.</i></div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        6.
+        <input type="checkbox" id="gzfu335" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Enter the following code into the <code>webpack.config.js</code> file, then save and close the file.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exInfo.jpg" /></div><div class="ExRight"><i>There's no need to have a detailed understanding of how webpack works at this point. For now, it's enough to know that the tool will start looking at your code in the <code>src/index.js</code> file and produce a <code>bundle.js</code> output file, using Babel to transform every JavaScript file.</i></div></div><div class="ExRow"><div class="ExText">
+                  <p><code>var path = require('path');<br />
+var webpack = require('webpack');</code></p><p><code>module.exports = {<br />
+    devtool: 'source-map',<br />
+    entry: [<br />
+        './src/index'<br />
+    ],<br />
+    output: {<br />
+        path: path.join(__dirname, 'dist'),<br />
+        filename: 'bundle.js',<br />
+        publicPath: '/',<br />
+    },<br />
+    module: {<br />
+        loaders: [{<br />
+            test: /\.js$/,<br />
+            loaders: ['babel'],<br />
+            include: path.join(__dirname, 'src')<br />
+        }]<br />
+    }<br />
+};</code></p>
+              </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        7.
+        <input type="checkbox" id="gzfu336" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Move to the <code>index.html</code> file and modify the <code>&lt;script src=""&gt;&lt;/script&gt;</code> element to reference the <code>bundle.js</code> file that will be produced by webpack.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>Here's how the <code>index.html</code> file should look, with the change in bold.</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+                  <p><code>&lt;!DOCTYPE html&gt;<br />
+&lt;html&gt;<br />
+&lt;head&gt;<br />
+    &lt;meta charset="utf-8"&gt;<br />
+    &lt;title&gt;Welcome to Question Time&lt;/title&gt;<br />
+&lt;/head&gt;<br />
+&lt;body&gt;<br />
+&lt;div id="es-app"&gt;&lt;/div&gt;</code></p><p><code>&lt;script src="<strong>bundle.js</strong>"&gt;&lt;/script&gt;<br />
+&lt;/body&gt;<br />
+&lt;/html&gt;</code></p>
+              </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        8.
+        <input type="checkbox" id="gzfu337" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Return to the Node.js command prompt and run the <code>npm start</code> command.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>You should see that the webpack development web server will start up.</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+        <div class="MediaDiv" style="max-width: 979px;"><img src="images/2323.2.3.11.png" /></div>
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        9.
+        <input type="checkbox" id="gzfu338" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Use your browser to navigate to <code>http://localhost:8080/</code>.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>You should see that output has been displayed. Notice how the filename and line number are displayed from the original source <code>index.js</code> file rather than the generated output <code>bundle.js</code> file.</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+        <div class="MediaDiv" style="max-width: 893px;"><img src="images/2323.2.3.12.png" /></div>
+      </div></div><div class="ExRow"><div class="ExLeft" style="vertical-align:baseline;">
+        10.
+        <input type="checkbox" id="gzfu339" /></div><div class="ExRight" style="vertical-align:baseline;">
+        Return to WebStorm and modify the index.js file to <code>let i = 43</code>. Save the file.
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exQuestion.jpg" /></div><div class="ExRight"><i><p>What can you see in the Node.js command prompt and browser?</p><p><input type="text" id="gzfu3310" /></p></i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="RightImages"><img src="images/exCheckPoint.jpg" /></div><div class="ExRight"><i>You should see that the server has recompiled the JavaScript and the browser has reloaded, displaying the new value.</i></div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+        <div class="MediaDiv" style="max-width: 979px;"><img src="images/2323.2.3.14.1.png" /></div>
+      </div></div><div class="ExRow"><div class="ExLeft"><img src="images/exPadding.jpg" /></div><div class="ExRight">
+        <div class="MediaDiv" style="max-width: 893px;"><img src="images/2323.2.3.14.2.png" /></div>
+      </div></div><div class="ExRow" style="padding-top:24px;"><div class="ExLeft"><img src="images/exFinish.jpg" /></div><div class="ExRight"><strong>Congratulations! You have completed the exercise.</strong></div></div><div class="ExRow"><div class="ExCentredText"><img src="images/ExStop.jpg" /><br /><strong><i>This is the end of the exercise.</i></strong></div></div>
+  </div>
+  <div class="ExFooter"><br/>Viewer version 1.0.1505.28</div>
+</form>
+</body>
+</html>
+
+
