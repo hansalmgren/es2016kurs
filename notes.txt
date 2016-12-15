@@ -1,0 +1,23 @@
+
+
+JavaScript Design Patterns
+
+QUnit - jQuery
+
+mocha
+jasmin
+
+Jest - extends Jasmine
+
+node asm.js
+
+Weakmap
+
+pyramid of doom
+
+
+es6features.org
+
+
+srcset
+
